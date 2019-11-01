@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -46,6 +46,77 @@ const followersArray = [];
 
 */
 
+const followersArray = [
+  "PCDSandwichMan",
+  "DustinG98",
+  "bseverino",
+  "ShandaWoods",
+  "Hail91"
+];
+
+const fullCards = document.querySelector('.cards');
+
+axios.get("https://api.github.com/users/redfordch1").then(response => {
+  console.log(response.data);
+    let info = response.data;
+    fullCards.appendChild(NewCard(info));
+});
+
+followersArray.forEach(item => {
+  axios.get(`https://api.github.com/users/${item}`).then(response => {
+    let info2 = NewCard(response.data);
+    const fullCards = document.querySelector('.cards');
+    fullCards.appendChild(info2);
+});
+  
+})
+
+function NewCard(obj){
+
+  const cardS = document.createElement('div');
+  const imgs = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const users = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const address = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  cardS.classList.add('card');
+  cardInfo.classList.add('card-info');
+  users.classList.add('name');
+  userName.classList.add('username');
+
+  imgs.src = obj.avatar_url;
+  users.textContent = obj.name;
+  userName.textContent = obj.login;
+  location.textContent = 'Location: ' + obj.location;
+  profile.textContent = 'Profile: ';
+  address.href = obj.html_url;
+  address.textContent = obj.html_url;
+  followers.textContent = 'Followers: ' + obj.followers;
+  following.textContent = 'Following: ' + obj.following;
+  bio.textContent = 'Bio: ' + obj.bio;
+
+  profile.appendChild(address);
+  cardS.appendChild(imgs);
+  cardS.appendChild(cardInfo);
+  cardInfo.appendChild(users);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  return cardS;
+
+}
+
+
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -53,3 +124,5 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+
